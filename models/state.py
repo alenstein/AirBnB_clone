@@ -8,4 +8,3 @@ class State(BaseModel):
     """ Definition for class that manages state objects."""
 
     name = ""
-
