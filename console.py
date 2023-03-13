@@ -14,13 +14,13 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def default(self, line):
-         """ catch commands if nothing else matches"""
-         self._precmd(line)
-    
+        """ catch commands if nothing else matches"""
+        self._precmd(line)
+
     def _precmd(self, line):
         """ interprets commands to test for class.syntax()"""
         match = re.search(r"^(\w*)\.(\w+)(([^)]*)\))$", line)
-        
+
         if not match:
             return line
         classname = match.group(1)
@@ -29,24 +29,24 @@ class HBNBCommand(cmd.Cmd):
 
         match_uid_and_args = re.search('^"([^"]*)"(?:, (.*))?$', args)
         if match_uid_and_args:
-            uid =  match_uid_and_args.group(1)
+            uid = match_uid_and_args.group(1)
             attr_or_dict = match_uid_and_args.group(2)
         else:
             uid = args
             attr_or_dict = False
 
         attr_and_value = ""
-        if  method == "update" and attr_or_dict:
+        if method == "update" and attr_or_dict:
             match_dict = re.search('^({.*})$', attr_or_dict)
             if match_dict:
                 self.update_dict(classname, uid, match_dict.group(1))
                 return ""
-            
-            match_attr_and_value = re.search('^(?:"([^"]*)?(?:, (.*))?$)', \
+
+            match_attr_and_value = re.search('^(?:"([^"]*)?(?:, (.*))?$)',
                                              attr_or_dict)
             if match_attr_and_value:
                 attr_and_value = (match_attr_and_value.group(1) or "") + \
-                        " " + (match_attr_and_value.group(2) or "")
+                                 " " + (match_attr_and_value.group(2) or "")
         command = method + " " + classname + " " + uid + " " + attr_and_value
         self.onecmd(command)
         return command
@@ -62,10 +62,10 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         elif uid is None:
             print("** instance is missing **")
-        else :
+        else:
             key = "{}.{}".format(classname, uid)
             if key not in storage.all():
-                 print("** no instance found **")
+                print("** no instance found **")
             else:
                 attributes = storage.attributes()[classname]
                 for attribute, value in d.items():
@@ -89,7 +89,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """ creates an instance."""
-        if line ==  "" or line is None:
+        if line == "" or line is None:
             print("** class name missing**")
         elif line not in storage.classes():
             print("** class doesn't exit **")
@@ -100,7 +100,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """ prints the string representation of an instance."""
-        
+
         if line == "" or line is None:
             print("** class name missing **")
         else:
@@ -117,7 +117,6 @@ class HBNBCommand(cmd.Cmd):
                     print("** no instance found **")
                 else:
                     print(storage.all()[key])
-
 
     def do_destroy(self, line):
         """ deletes an instance based on the classname and id."""
@@ -144,8 +143,8 @@ class HBNBCommand(cmd.Cmd):
             if words[0] not in storage.classes():
                 print("** class doesn't exist **")
             else:
-                nl = [str(obj) for key, obj in storage.all().items() \
-                        if type(obj).__name__ == words[0]]
+                nl = [str(obj) for key, obj in storage.all().items()
+                      if type(obj).__name__ == words[0]]
                 print(nl)
         else:
             new_list = [str(obj) for key, obj in storage.all().items()]
@@ -160,9 +159,8 @@ class HBNBCommand(cmd.Cmd):
         elif words[0] not in storage.classes():
             print("** class does not exist **")
         else:
-            matches = [\
-                    k for k in storage.all() if k.startswith(\
-                    words[0] + '.')]
+            matches = [k for k in storage.all() if k.startswith(words[0] +
+                                                                '.')]
             print(len(matches))
 
     def do_update(self, line):
@@ -213,5 +211,5 @@ class HBNBCommand(cmd.Cmd):
             storage.all()[key].save()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     HBNBCommand().cmdloop()

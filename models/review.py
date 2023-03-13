@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Module contains definition for the Review class"""
 
+import sys
 from models.base_model import BaseModel
 
 
